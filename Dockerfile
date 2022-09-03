@@ -10,7 +10,7 @@ ARG project_dir=/opt/
 ADD . $project_dir
 WORKDIR $project_dir
 
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install -r requirements.txt
 
 EXPOSE 80
-ENTRYPOINT ["uvicorn", "src.app:app", "--host", "0.0.0.0", "--port", "80", "--forwarded-allow-ips", "*", "--timeout-keep-alive", "90"]
+CMD ["gunicorn", "-w", "1", "-b", "0.0.0.0:80", "--timeout", "300", "src.app:app"]
